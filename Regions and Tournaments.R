@@ -32,17 +32,18 @@ competition.list <- data.table(region.id = rep(competitions$region.id,
                                                sapply(s, length)),
                                str_split_fixed(unlist(s),',',3))
 
-competition.table <- data.table(region.id = competition.list$region.id,
-                                competition.id = substr(competition.list$V1,2,
+competition.table <- data.table(competition.id = substr(competition.list$V1,2,
                                                         nchar(competition.list$V1)),
                                 competition.url = substr(competition.list$V2,7,
                                                          nchar(competition.list$V2) -
                                                            1),
                                 competition.name = substr(competition.list$V3,8,
                                                           nchar(competition.list$V3) -
-                                                            4))
+                                                            4),
+                                region.id = competition.list$region.id)
 
-
+rm(competition.list, competitions, regions, regions.competitions, regions.competitions2,
+   end.row, home.html, s, start.row, tries)
 
 if(update.competitions == "Y"){
   opta$con %>% db_drop_table(table = "competitiontable")

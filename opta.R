@@ -1,3 +1,5 @@
+setwd("C:/Users/Neil/Documents/Stats/Github_repos/opta-download")
+
 update.regions <- "Y"
 update.competitions <- "Y"
 update.matches <- "Y"
