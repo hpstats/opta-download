@@ -11,6 +11,7 @@ library(dplyr)
 library(ggplot2)
 library(rvest)
 library(RSQLite)
+library(lubridate)
 
 opta <- src_sqlite("C:/Users/Neil/Documents/Stats/SQL Databases/opta",create = FALSE)
 
