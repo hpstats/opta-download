@@ -2,6 +2,7 @@ setwd("C:/Users/Neil/Documents/Stats/Github_repos/opta-download")
 
 update.regions <- "Y"
 update.competitions <- "Y"
+update.teams <- "Y"
 update.matches <- "Y"
 
 library(data.table)
@@ -39,7 +40,7 @@ if (tries == 5){
   }
 }
 
-if (update.matches == "Y"){
+if (update.matches == "Y"  || update.teams == "Y"){
   source("Matches.R")
 } else {
   
