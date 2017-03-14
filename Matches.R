@@ -1,6 +1,5 @@
 #Download competition database
-CompetitionLkp <- tbl(opta, 'CompetitionLookup')
-CompetitionLookup <- collect(CompetitionLkp)
+CompetitionLookup <- collect(tbl(opta, 'CompetitionLookup'))
 
 #Initialise MatchLookup
 new.MatchLookup <- data.table(text.string = rep('', 10000),
