@@ -113,8 +113,18 @@ MatchLookup <- MatchLookup[year(MatchLookup$DateTime) == year(today())]
 
 #Add to matches database
 if(update.matches == "Y"){
-#Database stuff
+  MatchLookup.old <- collect(tbl(opta, "MatchLookup"))
+  MatchLookup.old$DateTime <- as_datetime(MatchLookup.old$DateTime)
+  MatchLookup.new <- MatchLookup[is.na(match(MatchLookup$MatchID,
+                                             MatchLookup.old$MatchID))]
+  MatchLookup.update <- rbind(MatchLookup.old, MatchLookup.new)
+  opta$con %>% db_drop_table(table = "MatchLookup.update")
+  dbWriteTable(opta$con, value = MatchLookup.update, name = "MatchLookup",
+               append = FALSE)
 }
+
+dbWriteTable(opta$con, value = TeamLookup, name = "TeamLookup",
+             append = FALSE)
 
 #Create TeamLookup
 TeamLookup.home <- data.table(TeamID = text.string2$V6,
@@ -129,5 +139,18 @@ TeamLookup <- unique(rbind(TeamLookup.home, TeamLookup.away))
 
 #Add to team database
 if(update.teams == "Y"){
-#Database stuff
+  TeamLookup.old <- collect(tbl(opta, "TeamLookup"))
+  TeamLookup.new <- TeamLookup[is.na(match(paste(TeamLookup$TeamID,
+                                                 TeamLookup$RegionID, sep = " "),
+              paste(TeamLookup.old$TeamID, TeamLookup.old$RegionID, sep = " ")))]
+  TeamLookup.update <- rbind(TeamLookup.old, TeamLookup.new)
+  opta$con %>% db_drop_table(table = "TeamLookup")
+  dbWriteTable(opta$con, value = TeamLookup.update, name = "TeamLookup",
+               append = FALSE)
 }
+
+rm(CompetitionLookup, MatchLookup, MatchLookup.new, MatchLookup.old, MatchLookup.update,
+   new.MatchLookup, TeamLookup, TeamLookup.away, TeamLookup.home, TeamLookup.new,
+   TeamLookup.old, TeamLookup.update, text.string2, address2, address3, comp.html,
+   endrows, fixtures.block, fixtures.html, fixtures.line, fixtures.url, i, info, j, pb,
+   start.row, tries)
